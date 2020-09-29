@@ -13,7 +13,7 @@ showFullContent = false
 In this section I will be tracking my active projects. More needs to be written here, but for the time being:
 
 
-## The GamePicker
+## [The GamePicker](gamepicker.matthiggins.app)
 
 In GamePicker, you can supply the link to your Steam profile and it will fetch your list of owned games, then pick a game from the list for you to play. Picking a game to play, really anything, is a surprisingly common problem amongst my friends. They requested that I make a tool to help them out.
 
