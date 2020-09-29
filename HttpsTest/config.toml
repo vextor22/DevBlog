@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "/PagesHttpsTest/"
 languageCode = "en-us"
 theme = "terminal"
 paginate = 5
