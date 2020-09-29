@@ -23,7 +23,7 @@ To install Pathogen via Ansible, we add the following tasks to the Ansible role:
 - name: Create pathogen dir
   shell: mkdir -p ~/.vim/autoload ~/.vim/bundle 
 - name: Pull pathogen
-shell: curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+  shell: curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 ```
 These tasks create the expected paths for pathogen as well as pull the pathogen Vim module itself via curl.
 # Adding Pathogen to .vimrc
@@ -44,7 +44,7 @@ To do this, we can use the following tasks:
       path: ~/.vimrc
       insertbefore: BOF
       line: "execute pathogen#infect()"
-when: pathogen_present.stdout == "0"
+  when: pathogen_present.stdout == "0"
 ```
 
 These tasks check for pathogen in the .vimrc file using grep to produce output if the configuration line exists. When the number of output lines, counted by wc -l, is 0, The next task will run, adding the Pathogen configuration to the .vimrc. To ensure the line is added to the beginning of the file we use insertbefore: BOF, where BOF means Beginning Of File.
@@ -70,7 +70,7 @@ Now that Pathogen is installed with Ansible, we want to install a Vim package to
   lineinfile:
       path: ~/.vimrc
       line: "set laststatus=2"
-when: laststatus_present.stdout == "0"
+  when: laststatus_present.stdout == "0"
 ```
 
 After starting Vim you should see Lightline at the bottom of the screen. With this done, you are able to install whatever other Vim packages you'd like using Ansible. To see more examples, check out my Ansible script linked above.
