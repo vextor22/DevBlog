@@ -34,8 +34,8 @@ jobs:
 
       - name: Build
         run: hugo --minify --source ./HttpsTest -d ../docs
-        
-      -name: Copy CNAME into release
+
+      - name: Copy CNAME into release
         run: cp CNAME ./docs
         
       - name: Deploy
