@@ -6,13 +6,13 @@ authorTwitter = "Mr_Higgi" #do not include @
 cover = ""
 tags = ["configuration", "linux"]
 keywords = ["linux", "fstab", "selinux", "nfs", "cifs", "samba"]
-description = ""
+description = "If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function."
 showFullContent = false
 +++
 
 
 
-If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function
+If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function.
 
 # Test First!
 Before adding the network file share to fstab, test it with mount. For my environment the resulting mount command was:
@@ -32,7 +32,7 @@ sudo umount /mnt/nfs_downloads
 # Configure fstab
 Configuring fstab to correspond to the above mount, we add a line to /etc/fstab which looks like the following:
 
-```bash
+```
 //<NFS server>/<NFS path> /mnt/nfs_downloads/ cifs username=<username>,password=<password>,uid=<uid number>,gid=<gid number>,context="system_u:object_r:container_file_t:s0" 0 0
 ```
 
