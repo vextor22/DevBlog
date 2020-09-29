@@ -35,6 +35,9 @@ jobs:
       - name: Build
         run: hugo --minify --source ./HttpsTest -d ../docs
         
+      -name: Copy CNAME into release
+        run: cp CNAME ./docs
+        
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
