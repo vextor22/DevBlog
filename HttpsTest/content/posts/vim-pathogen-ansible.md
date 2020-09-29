@@ -12,7 +12,7 @@ showFullContent = false
 
 If you want to maintain a base Vim configuration file while also having the ability to easily configure Vim for Pathogen package management in environments that will support it, you can do so with Ansible.
 
-The Ansible script for this involves inserting your general .vimrc (or skipping this step if you have another method of inserting the .vimrc), and then installing Pathogen with the infect() line at the head of .vimrc with a lineinfile directive.
+The Ansible script for this involves inserting a base .vimrc (or skipping this step if you have another method of inserting the .vimrc), and then installing Pathogen with infect() at the head of the .vimrc. This method accomplishes configuration from scratch, or addition of Pathogen to an existing configuration without destroying existing changes.
 
 The [complete script](https://github.com/vextor22/ansible_scripts/blob/master/roles/dev/tasks/main.yml) is available on my [GitHub Ansible Repo](https://github.com/vextor22/ansible_scripts) for my basic dev environment. I recommend that if you don't already, create Ansible tasks for any configuration you commonly perform in a new environment. If you keep this up to date, you're only ever one ansible-playbook command away from a comfortable editor and toolset.
 # Installing Pathogen
