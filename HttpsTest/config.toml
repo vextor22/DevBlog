@@ -12,16 +12,16 @@ paginate = 5
   themeColor = "orange"
 
   # if you set this to 0, only submenu trigger will be visible
-  showMenuItems = 2
+  showMenuItems = 0
 
   # show selector to switch language
   showLanguageSelector = false
 
   # set theme to full screen width
-  fullWidthTheme = false
+  fullWidthTheme = true
 
   # center theme with default width
-  centerTheme = false
+  centerTheme = true
 
   # set a custom favicon (default is a `themeColor` square)
   # favicon = "favicon.ico"
@@ -40,15 +40,15 @@ paginate = 5
   # set Twitter handles for Twitter cards
   # see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started#card-and-content-attribution
   # do not include @
-  creator = ""
-  site = ""
+  creator = "Mr_Higgi"
+  site = "github-pages.matthiggins.app"
 
 [languages]
   [languages.en]
     languageName = "English"
-    title = "Terminal"
+    title = "Github Pages Test"
     subtitle = "A simple, retro theme for Hugo"
-    owner = ""
+    owner = "Matt Higgins"
     keywords = ""
     copyright = ""
     menuMore = "Show more"
@@ -58,7 +58,7 @@ paginate = 5
     missingBackButtonLabel = "Back to home page"
 
     [languages.en.params.logo]
-      logoText = "Terminal"
+      logoText = "Github Pages"
       logoHomeLink = "/"
 
     [languages.en.menu]
