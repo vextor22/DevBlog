@@ -1,12 +1,12 @@
 +++
 title = "Installing Pathogen for Vim using Ansible"
 date = "2020-09-29T15:19:01-04:00"
-author = ""
-authorTwitter = "" #do not include @
+author = "Matt Higgins"
+authorTwitter = "Mr_Higgi" #do not include @
 cover = ""
-tags = ["", ""]
-keywords = ["", ""]
-description = ""
+tags = ["vim", ""]
+keywords = ["Ansible", "Vim", "Pathogen", "Automation"]
+description = "Use Ansible to automate configuration of your dev environment. As an example, I show you how to automate configuration of Vim+Pathogen."
 showFullContent = false
 +++
 
