@@ -1,4 +1,4 @@
-baseURL = "https://www.matthiggins.dev"
+baseURL = "/"
 languageCode = "en-us"
 defaultContentLanguage = "en"
 title = "Matt Higgins Dev Blog"
