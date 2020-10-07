@@ -1,0 +1,75 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Matt Higgins Dev Blog</title><link>/posts/</link><description>Recent content in Posts on Matt Higgins Dev Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 06 Oct 2020 21:18:06 -0400</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Configure Vim with Ansible</title><link>/posts/vim-pathogen-ansible/</link><pubDate>Tue, 06 Oct 2020 21:18:06 -0400</pubDate><guid>/posts/vim-pathogen-ansible/</guid><description>If you want to maintain a base Vim configuration file while also having the ability to easily configure Vim for Pathogen package management in environments that will support it, you can do so with Ansible.
+The Ansible script for this involves inserting a base .vimrc (or skipping this step if you have another method of inserting the .vimrc), and then installing Pathogen with infect() at the head of the .vimrc. This method accomplishes configuration from scratch, or addition of Pathogen to an existing configuration without destroying existing changes.</description><content type="html"><![CDATA[<p>If you want to maintain a base Vim configuration file while also having the ability to easily configure Vim for Pathogen package management in environments that will support it, you can do so with Ansible.</p>
+<p>The Ansible script for this involves inserting a base .vimrc (or skipping this step if you have another method of inserting the .vimrc), and then installing Pathogen with infect() at the head of the .vimrc. This method accomplishes configuration from scratch, or addition of Pathogen to an existing configuration without destroying existing changes.</p>
+<p>The <a href="https://github.com/vextor22/ansible_scripts/blob/master/roles/dev/tasks/main.yml">complete script</a> is available on my <a href="https://github.com/vextor22/ansible_scripts">GitHub Ansible Repo</a> for my basic dev environment. I recommend that if you don&rsquo;t already, create Ansible tasks for any configuration you commonly perform in a new environment. If you keep this up to date, you&rsquo;re only ever one ansible-playbook command away from a comfortable editor and toolset.</p>
+<h1 id="installing-pathogen">Installing Pathogen</h1>
+<p>To install Pathogen via Ansible, we add the following tasks to the Ansible role:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Create pathogen dir</span><span class="w">
+</span><span class="w">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l">mkdir -p ~/.vim/autoload ~/.vim/bundle </span><span class="w">
+</span><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Pull pathogen</span><span class="w">
+</span><span class="w">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l">curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim</span><span class="w">
+</span></code></pre></div><p>These tasks create the expected paths for pathogen as well as pull the pathogen Vim module itself via curl.</p>
+<h1 id="adding-pathogen-to-vimrc">Adding Pathogen to .vimrc</h1>
+<p>To add Pathogen to the .vimrc, we want to first detect if Pathogen has already been added, and second add Pathogen to the head of the file if it isn&rsquo;t there already.</p>
+<p>To do this, we can use the following tasks:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">check for pathogen in vimrc</span><span class="w">
+</span><span class="w">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;cat ~/.vimrc | grep pathogen#infect\\(\\) | wc -l&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l">pathogen_present</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l">msg=&#34;{{pathogen_present.stdout}}&#34;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Add pathogen to vimrc if not present</span><span class="w">
+</span><span class="w">  </span><span class="nt">lineinfile</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">~/.vimrc</span><span class="w">
+</span><span class="w">      </span><span class="nt">insertbefore</span><span class="p">:</span><span class="w"> </span><span class="l">BOF</span><span class="w">
+</span><span class="w">      </span><span class="nt">line</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;execute pathogen#infect()&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">pathogen_present.stdout == &#34;0&#34;</span><span class="w">
+</span></code></pre></div><p>These tasks check for pathogen in the .vimrc file using grep to produce output if the configuration line exists. When the number of output lines, counted by wc -l, is 0, The next task will run, adding the Pathogen configuration to the .vimrc. To ensure the line is added to the beginning of the file we use insertbefore: BOF, where BOF means Beginning Of File.</p>
+<h1 id="using-pathogen-with-ansible">Using Pathogen with Ansible</h1>
+<p>Now that Pathogen is installed with Ansible, we want to install a Vim package to use it. The most visible package to install this way is <a href="https://github.com/itchyny/lightline.vim">Lightline</a>. The install for this package with Ansible and Pathogen is as simple as:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Vim - Install Lightline</span><span class="w">
+</span><span class="w">  </span><span class="nt">git</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l">git@github.com:itchyny/lightline.vim.git</span><span class="w">
+</span><span class="w">      </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l">~/.vim/bundle/lightline.vim</span><span class="w">
+</span><span class="w">      </span><span class="nt">clone</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span><span class="w">      </span><span class="nt">update</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">check for laststatus in vimrc</span><span class="w">
+</span><span class="w">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;cat ~/.vimrc | grep laststatus=2 | wc -l&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l">laststatus_present</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l">msg=&#34;{{laststatus_present.stdout}}&#34;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Add laststatus to vimrc if not present to fix lightline</span><span class="w">
+</span><span class="w">  </span><span class="nt">lineinfile</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">~/.vimrc</span><span class="w">
+</span><span class="w">      </span><span class="nt">line</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;set laststatus=2&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l">laststatus_present.stdout == &#34;0&#34;</span><span class="w">
+</span></code></pre></div><p>After starting Vim you should see Lightline at the bottom of the screen. With this done, you are able to install whatever other Vim packages you&rsquo;d like using Ansible. To see more examples, check out my Ansible script linked above.</p>
+]]></content></item><item><title>Persistent NFS with FSTab</title><link>/posts/persistent-nfs-with-fstab/</link><pubDate>Mon, 05 Oct 2020 21:17:05 -0400</pubDate><guid>/posts/persistent-nfs-with-fstab/</guid><description>If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function.
+Test First! Before adding the network file share to fstab, test it with mount. For my environment the resulting mount command was:
+sudo mount -t cifs //&amp;lt;NFS server&amp;gt;/&amp;lt;NFS path&amp;gt; /mnt/nfs_downloads/ -o username=&amp;lt;username&amp;gt;,password=&amp;lt;password&amp;gt;,uid=$(id -u),gid=$(id -g),context=&amp;#34;system_u:object_r:container_file_t:s0&amp;#34; Notice the context in the options section to provide an SELinux context to the file share.</description><content type="html"><![CDATA[<p>If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function.</p>
+<h1 id="test-first">Test First!</h1>
+<p>Before adding the network file share to fstab, test it with mount. For my environment the resulting mount command was:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mount -t cifs //&lt;NFS server&gt;/&lt;NFS path&gt; /mnt/nfs_downloads/ -o <span class="nv">username</span><span class="o">=</span>&lt;username&gt;,password<span class="o">=</span>&lt;password&gt;,uid<span class="o">=</span><span class="k">$(</span>id -u<span class="k">)</span>,gid<span class="o">=</span><span class="k">$(</span>id -g<span class="k">)</span>,context<span class="o">=</span><span class="s2">&#34;system_u:object_r:container_file_t:s0&#34;</span>
+</code></pre></div><p>Notice the context in the options section to provide an SELinux context to the file share. This will be important to you in Fedora, Centos, RHEL or any other environment using SELinux. In my case, the files here needed to be accessed by a containerized application, so I set the container_file_t context.</p>
+<p>Finally, with a working mount, unmount the share:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo umount /mnt/nfs_downloads
+</code></pre></div><h1 id="configure-fstab">Configure fstab</h1>
+<p>Configuring fstab to correspond to the above mount, we add a line to /etc/fstab which looks like the following:</p>
+<pre><code>//&lt;NFS server&gt;/&lt;NFS path&gt; /mnt/nfs_downloads/ cifs username=&lt;username&gt;,password=&lt;password&gt;,uid=&lt;uid number&gt;,gid=&lt;gid number&gt;,context=&quot;system_u:object_r:container_file_t:s0&quot; 0 0
+</code></pre><p>Notice that uid and gid have been changed from $(id -u) and $(id -g) to the numbers corresponding to a user directly. This is because fstab is not running in your interactive shell but at startup, and the uid and gid will not yet be set to the expected values.
+Reload fstab</p>
+<p>Reloading fstab can be done by restarting the machine. However, this is not always convenient. Alternatively you can reload fstab using mount -a:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sudo mount -av
+</code></pre></div><h1 id="in-conclusion">In conclusion</h1>
+<p>You now have a remote network filesystem mounted persistently to the host using fstab. Optionally, you&rsquo;ve configured the share with an SELinux context that will allow access to a containerized application.</p>
+]]></content></item><item><title>Sudoless Docker</title><link>/posts/sudoless-docker/</link><pubDate>Sun, 04 Oct 2020 21:15:06 -0400</pubDate><guid>/posts/sudoless-docker/</guid><description>Using sudo with every docker command is incredibly annoying after a while. If you are configuring a development environment with something like docker-compose, you really won&amp;rsquo;t want to keep writing a command, forgetting sudo, and then doing the command again. Thankfully, it is really easy to simply fix this problem. The instructions can be found on the docker documentation, aside from a small change for Arch.
+Create the docker group: sudo groupadd docker Add yourself to the group: sudo usermod -aG docker $USER (On arch: sudo gpasswd -a $USER docker) Sign out and then back in.</description><content type="html"><![CDATA[<p>Using sudo with every docker command is incredibly annoying after a while. If you are configuring a development environment with something like docker-compose, you really won&rsquo;t want to keep writing a command, forgetting sudo, and then doing the command again. Thankfully, it is really easy to simply fix this problem. The instructions can be found on the <a href="https://docs.docker.com/engine/install/linux-postinstall/">docker documentation</a>, aside from a small change for Arch.</p>
+<ol>
+<li>Create the docker group: sudo groupadd docker</li>
+<li>Add yourself to the group: sudo usermod -aG docker $USER (On arch: sudo gpasswd -a $USER docker)</li>
+<li>Sign out and then back in. Alternatively, you may have to restart if group permissions aren&rsquo;t getting re-evaluated. (I had to do this on my laptop for some reason..)</li>
+</ol>
+<p>Once this is done, using docker and docker-compose becomes much more seamless. It isn&rsquo;t a huge change functionally, but it makes development on docker feel significantly less cumbersome!</p>
+]]></content></item></channel></rss>
