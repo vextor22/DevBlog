@@ -1,16 +1,20 @@
-+++
-title = "Persistent NFS With FStab"
-date = "2020-09-29T14:59:52-04:00"
-author = "Matt Higgins"
-authorTwitter = "Mr_Higgi" #do not include @
-cover = ""
-tags = ["configuration", "linux"]
-keywords = ["linux", "fstab", "selinux", "nfs", "cifs", "samba"]
-description = "If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function."
-showFullContent = false
-+++
-
-
+---
+title: "Persistent NFS with FSTab"
+date: 2020-10-05T21:17:05-04:00
+draft: false
+toc: false
+images:
+keywords:
+  - linux
+  - fstab
+  - selinux
+  - nfs
+  - cifs
+  - samba
+tags: 
+  - linux
+  - configuration
+---
 
 If you want to mount a Samba network file share persistently in linux, you will want to use fstab. With fstab, the share will be remounted when the system boots, so services that depend on the share will be able to function.
 

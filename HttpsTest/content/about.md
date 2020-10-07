@@ -1,15 +1,14 @@
 
-+++
-title = "About Me"
-date = "2020-09-29T14:14:00-04:00"
-author = "Matt Higgins"
-authorTwitter = "Mr_Higgi" #do not include @
-cover = ""
-tags = ["About", "Resume"]
-keywords = ["About", "Resume"]
-description = ""
-showFullContent = false
-+++
+---
+title: "About Me"
+date: 2020-10-06T21:19:06-04:00
+draft: false
+toc: false
+images:
+tags: 
+  - About
+  - Resume
+---
 
 Since graduating with a BS in Computer Science from Clemson University in 2017, I have worked as a professional software engineer for the past 3 years. In my spare time, I have developed web applications, published this blog, created animatronic props for conventions, and built a small technology lab/makerspace in my house. My homelab now includes a custom built virtualization server, a Prusa i3 3d printer, and a 45 watt CO2 laser cutter.
 

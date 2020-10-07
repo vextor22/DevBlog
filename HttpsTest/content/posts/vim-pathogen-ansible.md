@@ -1,14 +1,19 @@
-+++
-title = "Installing Pathogen for Vim using Ansible"
-date = "2020-09-29T19:19:01-04:00"
-author = "Matt Higgins"
-authorTwitter = "Mr_Higgi" #do not include @
-cover = ""
-tags = ["vim", "configuration", "linux"]
-keywords = ["Ansible", "Vim", "Pathogen", "Automation"]
-description = "Use Ansible to automate configuration of your dev environment. As an example, I show you how to automate configuration of Vim+Pathogen."
-showFullContent = false
-+++
+---
+title: "Configure Vim with Ansible"
+date: 2020-10-06T21:18:06-04:00
+draft: false
+toc: false
+images:
+keywords:
+  - ansible
+  - vim
+  - pathogen
+  - automation
+tags: 
+  - linux
+  - vim
+  - configuration
+---
 
 If you want to maintain a base Vim configuration file while also having the ability to easily configure Vim for Pathogen package management in environments that will support it, you can do so with Ansible.
 

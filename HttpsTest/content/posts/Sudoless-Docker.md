@@ -1,17 +1,16 @@
-+++
-title = "Sudoless Docker"
-date = "2020-10-06T16:30:11-04:00"
-author = "Matt Higgins"
-authorTwitter = "" #do not include @
-cover = ""
-tags = ["linux", "docker"]
-keywords = ["linux", "docker", "configuration"]
-description = "For personal reference, I can never remember how to configure Docker to run without sudo when I find myself at a new random dev box. Having this available for reference on my site has been helpful for me, and maybe it'll help somebody else."
-showFullContent = false
-draft = false
-+++
+---
+title: "Sudoless Docker"
+date: 2020-10-04T21:15:06-04:00
+draft: false
+toc: false
+images:
+tags: 
+  - linux
+  - docker
+  - configuration
+---
 
-Using sudo with every docker command is incredibly annoying after a while. If you are configuring a development environment with something like docker-compose, you really won't want to keep writing a command, forgetting sudo, and then doing the command again. Thankfully, it is really easy to simply fix this problem. The instructions can be found on the docker documentation, aside from a small change for Arch.
+Using sudo with every docker command is incredibly annoying after a while. If you are configuring a development environment with something like docker-compose, you really won't want to keep writing a command, forgetting sudo, and then doing the command again. Thankfully, it is really easy to simply fix this problem. The instructions can be found on the [docker documentation](https://docs.docker.com/engine/install/linux-postinstall/), aside from a small change for Arch.
 
 1. Create the docker group: sudo groupadd docker
 1. Add yourself to the group: sudo usermod -aG docker $USER (On arch: sudo gpasswd -a $USER docker)
