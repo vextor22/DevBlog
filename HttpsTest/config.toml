@@ -1,72 +1,73 @@
-baseurl = "/"
+baseURL = "https://www.matthiggins.dev"
 languageCode = "en-us"
-theme = "terminal"
-paginate = 5
+defaultContentLanguage = "en"
+title = "Matt Higgins Dev Blog"
+theme = "hermit"
+enableGitInfo = true
+pygmentsCodefences  = true
+pygmentsUseClasses  = true
+# hasCJKLanguage = true  # If Chinese/Japanese/Korean is your main content language, enable this to make wordCount works right.
+rssLimit = 10  # Maximum number of items in the RSS feed.
+copyright = "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License." # This message is only used by the RSS template.
+enableEmoji = true  # Shorthand emojis in content files - https://gohugo.io/functions/emojify/
+# googleAnalytics = "UA-123-45"
+# disqusShortname = "yourdiscussshortname"
+
+[author]
+  name = "Matt Higgins"
+
+[blackfriday]
+  # hrefTargetBlank = true
+  # noreferrerLinks = true
+  # nofollowLinks = true
+
+[taxonomies]
+  tag = "tags"
+  # Categories are disabled by default.
 
 [params]
-  # dir name of your main content (default is `content/posts`).
-  # the list of set content will show up on your index page (baseurl).
-  contentTypeName = "posts"
+  dateform        = "Jan 2, 2006"
+  dateformShort   = "Jan 2"
+  dateformNum     = "2006-01-02"
+  dateformNumTime = "2006-01-02 15:04 -0700"
 
-  # ["orange", "blue", "red", "green", "pink"]
-  themeColor = "blue"
+  # Metadata mostly used in document's head
+  # description = ""
+  # images = [""]
+  themeColor = "#494f5c"
 
-  # if you set this to 0, only submenu trigger will be visible
-  showMenuItems = 2
+  homeSubtitle = "Software Dev, Maker, tech enthusiast in Charleston SC"
+  footerCopyright = ' &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a>'
+  # bgImg = ""  # Homepage background-image URL
 
-  # show selector to switch language
-  showLanguageSelector = false
+  # Prefix of link to the git commit detail page. GitInfo must be enabled.
+  # gitUrl = "https://github.com/username/repository/commit/"
 
-  # set theme to full screen width
-  fullWidthTheme = false
+  # Toggling this option needs to rebuild SCSS, requires Hugo extended version
+  justifyContent = false  # Set "text-align: justify" to `.content`.
 
-  # center theme with default width
-  centerTheme = true
+  relatedPosts = true  # Add a related content section to all single posts page
 
-  # set a custom favicon (default is a `themeColor` square)
-  favicon = "img/fav/favicon.png"
+  code_copy_button = true # Turn on/off the code-copy-button for code-fields
+  
+  # Add custom css
+  # customCSS = ["css/foo.css", "css/bar.css"]
 
-  # set post to show the last updated
-  # If you use git, you can set `enableGitInfo` to `true` and then post will automatically get the last updated
-  showLastUpdated = false
-  # Provide a string as a prefix for the last update date. By default, it looks like this: 2020-xx-xx [Updated: 2020-xx-xx] :: Author
-  # updatedDatePrefix = "Updated"
+  # Social Icons
+  # Check https://github.com/Track3/hermit#social-icons for more info.
 
-  # set all headings to their default size (depending on browser settings)
-  # it's set to `true` by default
-  # oneHeadingSize = false
+  [[params.social]]
+    name = "github"
+    url = "https://github.com/vextor22"
 
-[params.twitter]
-  # set Twitter handles for Twitter cards
-  # see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started#card-and-content-attribution
-  # do not include @
-  creator = "Mr_Higgi"
-  site = "github-pages.matthiggins.app"
+[menu]
 
-[languages]
-  [languages.en]
-    languageName = "English"
-    title = "Dev Blog"
-    subtitle = "Software Dev, Maker, tech enthusiast in Charleston SC"
-    owner = "Matt Higgins"
-    keywords = "Software Dev Charleston SC"
-    copyright = ""
-    menuMore = "Show more"
-    readMore = "Read more"
-    readOtherPosts = "Read other posts"
-    missingContentMessage = "Page not found..."
-    missingBackButtonLabel = "Back to home page"
+  [[menu.main]]
+    name = "Posts"
+    url = "posts/"
+    weight = 10
 
-    [languages.en.params.logo]
-      logoText = "The Dev Blog"
-      logoHomeLink = "/"
-
-    [languages.en.menu]
-      [[languages.en.menu.main]]
-        identifier = "about"
-        name = "About"
-        url = "/about"
-      [[languages.en.menu.main]]
-        identifier = "projects"
-        name = "Projects"
-        url = "/projects"
+  [[menu.main]]
+    name = "About"
+    url = "about-hugo/"
+    weight = 20
